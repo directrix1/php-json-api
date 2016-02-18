@@ -100,7 +100,10 @@ class JsonApiTransformer extends Transformer
             ),
         ];
 
-        DataIncludedHelper::setResponseDataIncluded($this->mappings, $value, $data);
+	//FIXME: Make DataIncludeHelper recursive to a depth ... or ... include only what's passed in included param
+	//FIXME: Make DataIncludeHelper include relationships inside of included resources
+	// - Edward Flick
+        //DataIncludedHelper::setResponseDataIncluded($this->mappings, $value, $data);
 
         $this->setResponseLinks($value, $data);
         $this->setResponseMeta($data);
