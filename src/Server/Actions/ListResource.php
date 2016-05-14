@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace NilPortugues\Api\JsonApi\Server\Actions;
 
 use Exception;
@@ -130,7 +129,7 @@ class ListResource
             $results = $resultsCallable();
 
             $paginatedResource = new PaginatedResource(
-                $this->serializer->serialize($results),
+                $this->serializer->serialize($results, $this->fields, $this->included),
                 $this->page->number(),
                 $this->page->size(),
                 $totalAmount,
@@ -176,7 +175,7 @@ class ListResource
                 'self' => $pageNumber,
                 'first' => 1,
                 'next' => ($next <= $last) ? $next : null,
-                'previous' => ($previous > 1) ? $previous : null,
+                'previous' => ($previous >= 1) ? $previous : null,
                 'last' => $last,
             ]
         );

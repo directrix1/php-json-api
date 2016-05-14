@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace NilPortugues\Api\JsonApi\Http\Request;
 
 use NilPortugues\Api\JsonApi\Http\Request\Parameters\Fields;
@@ -24,6 +23,9 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
  */
 class Request extends \Zend\Diactoros\Request
 {
+    /** @var ServerRequestInterface|\Zend\Diactoros\ServerRequest */
+    protected $request;
+
     /**
      * @param ServerRequestInterface $request
      */
@@ -51,7 +53,7 @@ class Request extends \Zend\Diactoros\Request
         $include = $this->getQueryParam('include', []);
         $included = new Included();
 
-        if (is_string($include)) {
+        if (is_string($include) && strlen($include)) {
             $includeNames = \explode(',', $include);
             foreach ($includeNames as $relationship) {
                 $included->add($relationship);

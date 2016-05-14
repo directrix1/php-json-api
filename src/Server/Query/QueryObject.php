@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace NilPortugues\Api\JsonApi\Server\Query;
 
 use NilPortugues\Api\JsonApi\Http\Request\Parameters\Fields;
@@ -80,7 +79,7 @@ class QueryObject
 
                     $invalidMembers = array_diff($fields->members($type), $members);
                     foreach ($invalidMembers as $extraField) {
-                        $errorBag[] = new InvalidParameterMemberError($extraField, $type, strtolower($paramName));
+                        $errorBag->offsetSet(null, new InvalidParameterMemberError($extraField, $type, strtolower($paramName)));
                     }
                     unset($validateFields[$key]);
                 }
@@ -88,7 +87,7 @@ class QueryObject
 
             if (false === empty($validateFields)) {
                 foreach ($validateFields as $type) {
-                    $errorBag[] = new InvalidParameterError($type, strtolower($paramName));
+                    $errorBag->offsetSet(null, new InvalidParameterError($type, strtolower($paramName)));
                 }
             }
         }
@@ -109,15 +108,15 @@ class QueryObject
         $transformer = $serializer->getTransformer();
 
         foreach ($included->get() as $resource => $data) {
-            if (null == $transformer->getMappingByAlias($resource)) {
-                $errorBag[] = new InvalidParameterError($resource, strtolower($paramName));
+            if (null === $transformer->getMappingByAlias($resource)) {
+                $errorBag->offsetSet(null, new InvalidParameterError($resource, strtolower($paramName)));
                 continue;
             }
 
             if (is_array($data)) {
                 foreach ($data as $subResource) {
-                    if (null == $transformer->getMappingByAlias($subResource)) {
-                        $errorBag[] = new InvalidParameterError($subResource, strtolower($paramName));
+                    if (null === $transformer->getMappingByAlias($subResource)) {
+                        $errorBag->offsetSet(null, new InvalidParameterError($subResource, strtolower($paramName)));
                     }
                 }
             }
@@ -144,7 +143,7 @@ class QueryObject
                 $invalidProperties = array_diff($sortsFields, $mapping->getProperties());
 
                 foreach ($invalidProperties as $extraField) {
-                    $errorBag[] = new InvalidSortError($extraField);
+                    $errorBag->offsetSet(null, new InvalidSortError($extraField));
                 }
             }
         }

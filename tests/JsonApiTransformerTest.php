@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace NilPortugues\Tests\JsonApi;
 
 use NilPortugues\Api\JsonApi\Http\Request\Parameters\Fields;
@@ -84,14 +83,14 @@ class JsonApiTransformerTest extends \PHPUnit_Framework_TestCase
                "id":"1"
             }
          },
-         "comments":[
-            {
-               "data":{
-                  "type":"comment",
-                  "id":"1000"
-               }
-            }
-         ]
+        "comments": {
+            "data": [
+                {
+                    "type": "comment",
+                    "id": "1000"
+                }
+            ]
+        }
       }
    },
    "included":[
