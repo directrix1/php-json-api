@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NilPortugues\Api\JsonApi\Helpers;
 
 use NilPortugues\Api\JsonApi\JsonApiTransformer;
@@ -27,9 +28,7 @@ class PropertyHelper
      */
     public static function setResponseDataTypeAndId(array &$mappings, array &$value)
     {
-        $type = $value[Serializer::CLASS_IDENTIFIER_KEY];
-
-        if (empty($mappings[$type])) {
+        if (empty($type = $value[Serializer::CLASS_IDENTIFIER_KEY]) || (empty($mappings[$type]))) {
             return [];
         }
 

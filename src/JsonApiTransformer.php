@@ -8,14 +8,15 @@ use NilPortugues\Api\JsonApi\Helpers\DataLinksHelper;
 use NilPortugues\Api\JsonApi\Helpers\PropertyHelper;
 use NilPortugues\Api\Transformer\Helpers\RecursiveDeleteHelper;
 use NilPortugues\Api\Transformer\Helpers\RecursiveFilterHelper;
+use NilPortugues\Api\Transformer\Helpers\RecursiveFormatterHelper;
 use NilPortugues\Api\Transformer\Helpers\RecursiveRenamerHelper;
 use NilPortugues\Api\Transformer\Transformer;
 use NilPortugues\Serializer\Serializer;
 
 /**
- * This Transformer follows the http://JsonApi.org specification.
+ * This Transformer follows the http://jsonapi.org specification.
  *
- * @link http://JsonApi.org/format/#document-structure
+ * @link http://jsonapi.org/format/#document-structure
  */
 class JsonApiTransformer extends Transformer
 {
@@ -128,7 +129,7 @@ class JsonApiTransformer extends Transformer
         if (!empty($value[Serializer::CLASS_IDENTIFIER_KEY])) {
             $type = $value[Serializer::CLASS_IDENTIFIER_KEY];
 
-            if (\is_scalar($type)) {
+            if (\is_scalar($type) && !empty($this->mappings[$type])) {
                 $urls = $this->mappings[$type]->getUrls();
 
                 $data[self::LINKS_KEY] = \array_filter(
@@ -137,6 +138,25 @@ class JsonApiTransformer extends Transformer
                         (!empty($urls)) ? $this->addHrefToLinks($this->getResponseAdditionalLinks($value, $type)) : []
                     )
                 );
+
+                /*
+                 * Adds the _links:self:href link to the response.
+                 */
+                list($idValues, $idProperties) = RecursiveFormatterHelper::getIdPropertyAndValues(
+                    $this->mappings,
+                    $value,
+                    $type
+                );
+                $href = DataLinksHelper::buildUrl(
+                    $this->mappings,
+                    $idProperties,
+                    $idValues,
+                    $this->mappings[$type]->getResourceUrl(),
+                    $type
+                );
+                if ($href != $this->mappings[$type]->getResourceUrl()) {
+                    $data[self::LINKS_KEY][self::SELF_LINK][self::LINKS_HREF] = $href;
+                }
             }
         }
 

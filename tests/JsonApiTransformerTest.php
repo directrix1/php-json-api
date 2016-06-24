@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NilPortugues\Tests\JsonApi;
 
 use NilPortugues\Api\JsonApi\Http\Request\Parameters\Fields;
@@ -83,14 +84,14 @@ class JsonApiTransformerTest extends \PHPUnit_Framework_TestCase
                "id":"1"
             }
          },
-        "comments": {
+         "comments": {
             "data": [
                 {
                     "type": "comment",
                     "id": "1000"
                 }
             ]
-        }
+         }
       }
    },
    "included":[
@@ -159,12 +160,6 @@ class JsonApiTransformerTest extends \PHPUnit_Framework_TestCase
       "self":{
          "href":"http://example.com/posts/9"
       },
-      "first":{
-         "href":"http://example.com/posts/1"
-      },
-      "next":{
-         "href":"http://example.com/posts/10"
-      },
       "comments":{
          "href":"http://example.com/posts/9/comments"
       }
@@ -193,9 +188,6 @@ JSON;
             ]
         );
         $transformer->addMeta('is_devel', true);
-        $transformer->setSelfUrl('http://example.com/posts/9');
-        $transformer->setFirstUrl('http://example.com/posts/1');
-        $transformer->setNextUrl('http://example.com/posts/10');
 
         $this->assertEquals(
             \json_decode($expected, true),
@@ -269,12 +261,6 @@ JSON;
       "self":{
          "href":"http://example.com/posts/9"
       },
-      "first":{
-         "href":"http://example.com/posts/1"
-      },
-      "next":{
-         "href":"http://example.com/posts/10"
-      },
       "comments":{
          "href":"http://example.com/posts/9/comments"
       }
@@ -303,9 +289,6 @@ JSON;
             ]
         );
         $transformer->addMeta('is_devel', true);
-        $transformer->setSelfUrl('http://example.com/posts/9');
-        $transformer->setFirstUrl('http://example.com/posts/1');
-        $transformer->setNextUrl('http://example.com/posts/10');
 
         $included = new Included();
         $included->add('user.post');
@@ -381,12 +364,6 @@ JSON;
       "self":{
          "href":"http://example.com/posts/9"
       },
-      "first":{
-         "href":"http://example.com/posts/1"
-      },
-      "next":{
-         "href":"http://example.com/posts/10"
-      },
       "comments":{
          "href":"http://example.com/posts/9/comments"
       }
@@ -415,9 +392,6 @@ JSON;
             ]
         );
         $transformer->addMeta('is_devel', true);
-        $transformer->setSelfUrl('http://example.com/posts/9');
-        $transformer->setFirstUrl('http://example.com/posts/1');
-        $transformer->setNextUrl('http://example.com/posts/10');
 
         $included = new Included();
         $included->add('user');
@@ -457,12 +431,6 @@ JSON;
       "self":{
          "href":"http://example.com/posts/9"
       },
-      "first":{
-         "href":"http://example.com/posts/1"
-      },
-      "next":{
-         "href":"http://example.com/posts/10"
-      },
       "comments":{
          "href":"http://example.com/posts/9/comments"
       }
@@ -491,9 +459,6 @@ JSON;
             ]
         );
         $transformer->addMeta('is_devel', true);
-        $transformer->setSelfUrl('http://example.com/posts/9');
-        $transformer->setFirstUrl('http://example.com/posts/1');
-        $transformer->setNextUrl('http://example.com/posts/10');
 
         $fields = new Fields();
         $fields->addField('post', 'title');
@@ -564,12 +529,14 @@ JSON;
             "self": { "href": "/post/1" }
         }
     },
+    "links": {
+        "self": { "href": "/post/1" }
+    },
     "jsonapi": {
         "version": "1.0"
     }
 }
 JSON;
-
         $this->assertEquals(
             \json_decode($expected, true),
             \json_decode((new JsonApiSerializer($jsonApiJsonApiSerializer))->serialize($post), true)
@@ -636,6 +603,9 @@ JSON;
         "links": {
             "self": { "href": "/post/1" }
         }
+    },
+    "links": {
+        "self": { "href": "/post/1" }
     },
     "jsonapi": {
         "version": "1.0"
@@ -708,6 +678,9 @@ JSON;
             "self": { "href": "/post/1" }
         }
     },
+    "links": {
+        "self": { "href": "/post/1" }
+    },
     "jsonapi": {
         "version": "1.0"
     }
@@ -778,6 +751,9 @@ JSON;
             "self": { "href": "/post/1"}
         }
     },
+    "links": {
+        "self": { "href": "/post/1" }
+    },
     "jsonapi": {
         "version": "1.0"
     }
@@ -814,6 +790,9 @@ JSON;
         "links": {
             "self": { "href": "/post/1"}
         }
+    },
+    "links": {
+        "self": { "href": "/post/1" }
     },
     "jsonapi": {
         "version": "1.0"
@@ -947,6 +926,9 @@ JSON;
             "self": { "href": "/post/1" }
         }
     },
+    "links": {
+        "self": { "href": "/post/1" }
+    },
     "jsonapi": {
         "version": "1.0"
     }
@@ -995,6 +977,9 @@ JSON;
          }
       }
    },
+    "links": {
+        "self": { "href": "/comment/1" }
+    },
    "jsonapi":{
       "version":"1.0"
    }
